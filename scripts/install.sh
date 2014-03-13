@@ -1,9 +1,5 @@
 #! /bin/bash
 
-#if type -p java; then
-#    echo Info: Encontrado executável do java no PATH
-#    _java=java
-#el
 
 echo Info: Verificando instalação do java
 if [[ -n "$JAVA_HOME" ]] && [[ -x "$JAVA_HOME/bin/java" ]];  then
