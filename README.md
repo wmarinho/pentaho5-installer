@@ -149,4 +149,6 @@ tail -f pentaho.log
 cat pentaho.log | less
 </pre>
 
+### Configuração Adicionais
 
+* [Pentaho com PostgreSQL](https://github.com/wmarinho/pentaho5/tree/master/config/postgresql)
