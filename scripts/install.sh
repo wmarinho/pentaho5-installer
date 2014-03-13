@@ -38,13 +38,9 @@ user_info=$(getent passwd pentaho)
 if [[ "$user_info" ]]; then
     user_dir=$(getent passwd pentaho | awk -F ':' '{print $6}')
     echo Info: Usuário pentaho encontrado no diretório "$user_dir"
-    while true; do
-		read -p "Confirma diretório de instalação: [$user_dir]" yn
-		case $yn in
-		[Yy]* ) echo funcion;;
-		[Nn]* ) exit ;;
-		* ) echo "Please answer yes or no.";;
-		esac
-	done
+    read -p "Confirma diretório de instalação: [$user_dir] (y/n)?" yn
+    if [ $yn = "y" ] || [ $yn = "Y" ]; then 
+        echo ok
+    fi
 fi
 
