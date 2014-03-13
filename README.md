@@ -94,13 +94,13 @@ sudo vi /etc/init.d/pentaho
 
 * Adicionar script ao arquivo:
 <pre>
-\#!/bin/sh
-\# Provides: start-pentaho stop-pentaho
-\# Required-Start: networking postgresql
-\# Required-Stop: postgresql
-\# Default-Start: 2 3 4 5
-\# Default-Stop: 0 1 6
-\# Description: Pentaho BA Server
+#!/bin/sh
+# Provides: start-pentaho stop-pentaho
+# Required-Start: networking postgresql
+# Required-Stop: postgresql
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Description: Pentaho BA Server
 case "$1" in
 "start")
 su - pentaho -c "/opt/pentaho/biserver-ce/start-pentaho.sh"
