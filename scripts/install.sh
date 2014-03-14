@@ -1,12 +1,81 @@
 #! /bin/bash
 
+pentaho_dir=/opt/pentaho
+loginfo=debug #none | debug
+PWD=`pwd`
+install_opt=$1
+install_src_dir="$pentaho_dir/src"
 
-echo Info: Verificando instalação do java
+biserver_install_url="http://downloads.sourceforge.net/project/pentaho/Business%20Intelligence%20Server/5.0.1-stable/biserver-ce-5.0.1-stable.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fpentaho%2Ffiles%2FBusiness%2520Intelligence%2520Server%2F5.0.1-stable%2F&ts=1394208071&use_mirror=ufpr"
+
+function usage {
+  echo usage
+}
+
+function showinfo {
+    if [ "$3" == "debug" ]; then
+      echo "$1": "$2"
+    fi
+}
+
+function prompt {
+	read -p "$1" yn
+        if [ "$yn" == "n" ] || [ "$yn" == "N" ]; then
+            exit 1;
+        fi
+}
+
+function install {
+    showinfo "Info" "Iniciando $1 em $install_dir ..."
+    
+    case "$1" in
+	"biserver-ce") 
+		showinfo "Info" "Iniciando instalação do biserver-ce" $loginfo
+		install_src_dir="$install_dir/src"
+		showinfo "Info" "Baixando aplicação biserver-ce em $install_src_dir" $loginfo
+		if [ -d "$install_src_dir" ]; then			
+			prompt "Diretório $install_src_dir já existente. Tem certeza que deseja continuar? (y/n): "
+		else
+			showinfo "Info" "Criando diretório $install_src_dir" $loginfo
+			`mkdir -p $install_src_dir`
+		fi		  
+               if [ -f "$install_src_dir/biserver-ce-5.0.1-stable.zip" ]; then
+		 showinfo "Info" "Arquivo já existe"  $loginfo
+	        else
+               		showinfo "Info" "wget $biserver_install_url -O $install_src_dir/biserver-ce-5.0.1-stable.zip" $loginfo
+               		read -p "Executar comando? (y/n): " yn
+			if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then		      
+		       		`wget "$biserver_install_url" -O "$install_src_dir/biserver-ce-5.0.1-stable.zip"`
+ 			fi
+		fi
+		showinfo "Info" "Descompactando pacote em $install_dir ..."  $loginfo
+		/usr/bin/unzip "$install_src_dir/biserver-ce-5.0.1-stable.zip" -d "$install_dir"
+		chown -R pentaho:pentaho "$install_dir"
+		;;
+    esac
+}
+
+
+
+#while getopts c:hin: opt
+#do
+#   case "$opt" in
+#      c) cell=$OPTARG;;
+#      h) usage;;
+#      i) info="yes";;
+#      n) name=$OPTARG;;
+#      \?) usage;;
+#   esac
+#done
+
+
+showinfo "Info" "Verificando instalação do java" $loginfo
+
 if [[ -n "$JAVA_HOME" ]] && [[ -x "$JAVA_HOME/bin/java" ]];  then
-    echo Info: Executavel java encontrado em "$JAVA_HOME"/bin/java
+     showinfo "Info" "Executavel java encontrado em $JAVA_HOME/bin/java"
     _java="$JAVA_HOME/bin/java"
 elif type -p java; then
-    echo Info: Encontrado executável do java no PATH
+    showinfo "Info" "Encontrado executável do java no PATH" $loginfo
     _java=java
 else
     echo "Erro: Instalação cancelada. java não encontrado"
@@ -15,28 +84,41 @@ fi
 
 if [[ "$_java" ]]; then
     version=$("$_java" -version 2>&1 | awk -F '"' '/version/ {print $2}')
-    echo Info: Versão "$version"
+    showinfo "Info" "Versão $version" $loginfo
 else
     echo Erro: Instalação cancelada. Necessário instalação do java
-    exit 0
+    exit 1
 fi
 
 if [[ "$JAVA_HOME" ]]; then
-    echo Info: JAVA_HOME="$JAVA_HOME"
+     showinfo "Info" "JAVA_HOME=$JAVA_HOME" $loginfo
 else
-    echo Info: JAVA_HOME não definido
+    showinfo "Info" "JAVA_HOME não definido" $loginfo
 fi
 
-echo Info: Verificando usuário pentaho
+showinfo "Info" "Verificando usuário pentaho" $loginfo
 
 user_info=$(getent passwd pentaho)
 #echo $user_info
 if [[ "$user_info" ]]; then
     user_dir=$(getent passwd pentaho | awk -F ':' '{print $6}')
-    echo Info: Usuário pentaho encontrado no diretório "$user_dir"
-    read -p "Confirma diretório de instalação: [$user_dir] (y/n)?" yn
-    if [ $yn = "y" ] || [ $yn = "Y" ]; then 
-        echo ok
+    showinfo "Info" "Usuário pentaho encontrado no diretório $user_dir" $loginfo
+    pentaho_dir="$user_dir"
+    read -p "Tecle ENTER para confirmar ou digite o caminho de instalação: [$pentaho_dir]? " install_dir
+    if [ "$install_dir" == "" ]; then 
+        install_dir=$pentaho_dir
+	install $install_opt
+    else
+        if [ -d "$install_dir" ]; then
+		prompt "Diretório $install_dir já existente. Tem certeza que deseja continuar a instalação? (y/n): "
+		install $install_opt
+        else
+	        showinfo "Info" "Criando diretório $install_dir" $loginfo
+		install $install_opt
+			
+        fi	
     fi
+else
+ showinfo "Info" "Usuario pentaho não encontrado"
 fi
 
