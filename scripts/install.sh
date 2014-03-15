@@ -129,10 +129,12 @@ else
     if [ "$pentaho_user_name" ]; then
     	username= pentaho_user_name
     fi
+
     read -p "Tecle ENTER para confirmar ou digite o diretório do usuário $username [$pentaho_dir]: " pentaho_user_dir
     if [ "$pentaho_user_dir" ]; then
           pentaho_dir=$pentaho_user_dir
     fi
+    pentaho_user_dir=$pentaho_dir
     showinfo prompt "Executar Comando: 'useradd -s /bin/bash -d $pentaho_user_dir $username'. Confirma? (y/n) "
     useradd -s /bin/bash -m -d "$pentaho_user_dir" $username
     chown -R $username:$username $pentaho_user_dir 
