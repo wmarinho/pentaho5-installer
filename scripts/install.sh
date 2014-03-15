@@ -7,6 +7,9 @@ install_opt="$1"
 install_src_dir="$pentaho_dir/src"
 username=pentaho
 
+
+
+
 biserver_install_url="http://downloads.sourceforge.net/project/pentaho/Business%20Intelligence%20Server/5.0.1-stable/biserver-ce-5.0.1-stable.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fpentaho%2Ffiles%2FBusiness%2520Intelligence%2520Server%2F5.0.1-stable%2F&ts=1394208071&use_mirror=ufpr"
 
 printf "\033c"
@@ -17,6 +20,7 @@ echo "##########################################################"
 if [ "$install_opt" == "" ]; then
    install_opt="biserver-ce"
 fi
+
 
 function usage {
   echo usage
@@ -31,7 +35,7 @@ function showinfo {
 function prompt {
 	read -p "$1" yn
         if [ "$yn" == "n" ] || [ "$yn" == "N" ]; then
-            exit 1;
+            exit 0;
         fi
 }
 
@@ -60,7 +64,12 @@ function install {
 		fi
 		showinfo "Info" "Descompactando pacote em $install_dir ..."  $loginfo
 		/usr/bin/unzip "$install_src_dir/biserver-ce-5.0.1-stable.zip" -d "$install_dir"
+		cp -r config $install_dir
+		cp -r etl $install_dir
+		cp -r scripts $install_dir
+		cp -r lib  $install_dir
 		chown -R "$username":"$username" "$install_dir"
+                sh ./scripts/setup.sh $install_dir
 		;;
     esac
 }
