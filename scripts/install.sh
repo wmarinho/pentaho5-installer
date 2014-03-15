@@ -3,10 +3,20 @@
 pentaho_dir=/opt/pentaho
 loginfo=debug #none | debug
 PWD=`pwd`
-install_opt=$1
+install_opt="$1"
 install_src_dir="$pentaho_dir/src"
+username=pentaho
 
 biserver_install_url="http://downloads.sourceforge.net/project/pentaho/Business%20Intelligence%20Server/5.0.1-stable/biserver-ce-5.0.1-stable.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fpentaho%2Ffiles%2FBusiness%2520Intelligence%2520Server%2F5.0.1-stable%2F&ts=1394208071&use_mirror=ufpr"
+
+printf "\033c"
+echo "##########################################################"
+echo "##########  INSTACAÇÃO PENTAHO BISERVER CE ###############"
+echo "##########################################################"
+
+if [ "$install_opt" == "" ]; then
+   install_opt="biserver-ce"
+fi
 
 function usage {
   echo usage
@@ -50,7 +60,7 @@ function install {
 		fi
 		showinfo "Info" "Descompactando pacote em $install_dir ..."  $loginfo
 		/usr/bin/unzip "$install_src_dir/biserver-ce-5.0.1-stable.zip" -d "$install_dir"
-		chown -R pentaho:pentaho "$install_dir"
+		chown -R "$username":"$username" "$install_dir"
 		;;
     esac
 }
@@ -96,29 +106,46 @@ else
     showinfo "Info" "JAVA_HOME não definido" $loginfo
 fi
 
-showinfo "Info" "Verificando usuário pentaho" $loginfo
+read -p "Tecle ENTER para confirmar ou digite o nome do usuário pentaho: " pentaho_user_name
+if [ "$pentaho_user_name" ]; then
+     username=$pentaho_user_name
+fi
 
-user_info=$(getent passwd pentaho)
-#echo $user_info
+user_info=$(getent passwd $username)
+#echo $user_info/
 if [[ "$user_info" ]]; then
-    user_dir=$(getent passwd pentaho | awk -F ':' '{print $6}')
-    showinfo "Info" "Usuário pentaho encontrado no diretório $user_dir" $loginfo
+    user_dir=$(getent passwd $username | awk -F ':' '{print $6}')
+    showinfo "Info" "Usuário $username encontrado no diretório $user_dir" $loginfo
     pentaho_dir="$user_dir"
+else
+    showinfo "Info" "Usuário $username não encontrado."
+    read -p "Tecle ENTER para confirmar ou digite o nome do usuário [$username]: " pentaho_user_name
+    if [ "$pentaho_user_name" ]; then
+    	username= pentaho_user_name
+    fi
+    read -p "Tecle ENTER para confirmar ou digite o diretório do usuário $username [$pentaho_dir]: " pentaho_user_dir
+    if [ "$pentaho_user_dir" ]; then
+          pentaho_dir=$pentaho_user_dir
+    fi
+    showinfo prompt "Executar Comando: 'useradd -s /bin/bash -d $pentaho_user_dir $username'. Confirma? (y/n) "
+    useradd -s /bin/bash -m -d "$pentaho_user_dir" $username
+    chown -R $username:$username $pentaho_user_dir 
+fi
+
+
     read -p "Tecle ENTER para confirmar ou digite o caminho de instalação: [$pentaho_dir]? " install_dir
-    if [ "$install_dir" == "" ]; then 
+    if [ "$install_dir" == "" ]; then
         install_dir=$pentaho_dir
-	install $install_opt
+        install $install_opt
     else
         if [ -d "$install_dir" ]; then
-		prompt "Diretório $install_dir já existente. Tem certeza que deseja continuar a instalação? (y/n): "
-		install $install_opt
+                prompt "Diretório $install_dir já existente. Tem certeza que deseja continuar a instalação? (y/n): "
+                install $install_opt
         else
-	        showinfo "Info" "Criando diretório $install_dir" $loginfo
-		install $install_opt
-			
-        fi	
+                showinfo "Info" "Criando diretório $install_dir" $loginfo
+                install $install_opt
+
+        fi
     fi
-else
- showinfo "Info" "Usuario pentaho não encontrado"
-fi
+
 
