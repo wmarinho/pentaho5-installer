@@ -106,7 +106,7 @@ else
     showinfo "Info" "JAVA_HOME não definido" $loginfo
 fi
 
-read -p "Tecle ENTER para confirmar ou digite o nome do usuário pentaho: " pentaho_user_name
+read -p "Digite o nome do usuário pentaho: " pentaho_user_name
 if [ "$pentaho_user_name" ]; then
      username=$pentaho_user_name
 fi
