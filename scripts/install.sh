@@ -9,7 +9,6 @@ username=pentaho
 #set -e
 
 
-
 biserver_install_url="http://downloads.sourceforge.net/project/pentaho/Business%20Intelligence%20Server/5.0.1-stable/biserver-ce-5.0.1-stable.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fpentaho%2Ffiles%2FBusiness%2520Intelligence%2520Server%2F5.0.1-stable%2F&ts=1394208071&use_mirror=ufpr"
 
 printf "\033c"
@@ -56,7 +55,7 @@ function install {
                if [ -f "$install_src_dir/biserver-ce-5.0.1-stable.zip" ]; then
 		 showinfo "Info" "Arquivo já existe"  $loginfo
 	        else
-               		showinfo "Info" "wget $biserver_install_url -O $install_src_dir/biserver-ce-5.0.1-stable.zip" $loginfo
+               		showinfo "Info" "wget --progress=bar $biserver_install_url -O $install_src_dir/biserver-ce-5.0.1-stable.zip" $loginfo
                		read -p "Executar comando? (y/n): " yn
 			if [ "$yn" == "" ] ||  [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then		      
 		       		`wget "$biserver_install_url" -O "$install_src_dir/biserver-ce-5.0.1-stable.zip"`
@@ -79,7 +78,7 @@ function create_uninstall {
 	uninstall_file="scripts/_uninstall.sh"
 	echo "#!/bin/bash" > $uninstall_file
 	echo "userdel -f -r $username" >> $uninstall_file
-	echo "rm -rf $install_dir"
+	echo "rm -rf $install_dir" >> $uninstall_file
 	echo "rm /etc/init.d/pentaho" >> $uninstall_file
 
 }

@@ -1,4 +1,7 @@
 #!/bin/bash
 pwd=`pwd`
-
-sh $pwd/scripts/install.sh
+if [ "$(id -u)" == "0" ]; then
+	sh $pwd/scripts/install.sh
+else
+	echo "Necessário executar como root. Utilize: sudo ./install"
+fi
