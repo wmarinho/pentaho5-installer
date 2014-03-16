@@ -99,9 +99,9 @@ function setparam {
 }
 
 function initonboot {
-	echo "--------------------------------------------"
-	echo "Configurar inicialização automática no boot."
-	echo "--------------------------------------------"
+	echo "----------------------------------------------------"
+	echo "Preparando configuração de inicialização automática."
+	echo "----------------------------------------------------"
 	if [ -f "$install_dir/config/init_pentaho.tmp" ]; then
 		rm "$install_dir/config/init_pentaho.tmp"
 	fi
