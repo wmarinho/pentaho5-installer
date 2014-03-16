@@ -1,3 +1,3 @@
 #!/bin/bash
-userdel -f -r pentaho
+userdel -f -r pentahobi
 rm /etc/init.d/pentaho
