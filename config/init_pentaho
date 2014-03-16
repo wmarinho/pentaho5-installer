@@ -1,4 +1,5 @@
 #!/bin/sh
+# chkconfig: 2345 95 20
 # Provides: start-pentaho stop-pentaho
 # Default-Start: 2 3 4 5
 # Default-Stop: 0 1 6
