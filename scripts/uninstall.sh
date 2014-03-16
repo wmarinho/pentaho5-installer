@@ -5,7 +5,8 @@ if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 	read -p "****** ATENÇÃO: TODOS OS ARQUIVOS SERÃO EXCLUÍDOS. CONFIRMA? (y/n): " y
         if [ "$y" == "y" ] || [ "$y" == "Y" ]; then
 		echo "Desinstalando Pentaho"
-		sh $pwd/scripts/_uninstall.sh
+	
+		$pwd/scripts/_uninstall.sh
 		if [ $? -ne 0 ]; then
 			echo "Pentaho não foi removido corretamente."
 		else

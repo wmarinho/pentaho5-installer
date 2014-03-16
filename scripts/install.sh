@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 pentaho_dir=/opt/pentaho
 loginfo=debug #none | debug
@@ -8,6 +8,7 @@ install_src_dir="$pentaho_dir/src"
 username=pentaho
 #set -e
 
+chmod +x $PWD/scripts/*.sh
 
 biserver_install_url="http://downloads.sourceforge.net/project/pentaho/Business%20Intelligence%20Server/5.0.1-stable/biserver-ce-5.0.1-stable.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fpentaho%2Ffiles%2FBusiness%2520Intelligence%2520Server%2F5.0.1-stable%2F&ts=1394208071&use_mirror=ufpr"
 
@@ -62,6 +63,7 @@ function install {
  			fi
 		fi
 		showinfo "Info" "Descompactando pacote em $install_dir ..."  $loginfo
+		
 		/usr/bin/unzip "$install_src_dir/biserver-ce-5.0.1-stable.zip" -d "$install_dir"
 		cp -r config $install_dir
 		cp -r etl $install_dir
@@ -69,7 +71,7 @@ function install {
 		cp -r lib  $install_dir
 		chown -R "$username":"$username" "$install_dir"
 		create_uninstall
-                sh ./scripts/setup.sh $install_dir $username
+                ./scripts/setup.sh $install_dir $username
 		;;
     esac
 }
@@ -114,14 +116,25 @@ if [[ "$_java" ]]; then
     showinfo "Info" "Versão $version" $loginfo
     if [[ "$version" < "1.7" ]]; then
         echo "Necessário upgrade para java versão 1.7"
-	echo "Para Amazon Lixux AMI, utilize: sudo yum install java-1.7.0-openjdk && sudo alternatives --config java"
+	echo "Para RedHat/CentOS, utilize: sudo yum install java-1.7.0-openjdk && sudo alternatives --config java"
+	echo "Para Ubuntu, utilize:  sudo apt-get install openjdk-7-jre-headless"
 	exit 0
 
     fi
 
 else
     echo Erro: Instalação cancelada. Necessário instalação do java
+    echo "Para RedHat/CentOS, utilize: sudo yum install java-1.7.0-openjdk && sudo alternatives --config java"
+    echo "Para Ubuntu, utilize:  sudo apt-get install openjdk-7-jre-headless"
     exit 0
+fi
+
+if ! type -p unzip; then
+    echo Erro: Instalação cancelada. Necessário unzip
+    echo "Para RedHat/CentOS, utilize: sudo yum install unzip"
+    echo "Para Ubuntu, utilize:  sudo apt-get install unzip"
+    exit 0
+
 fi
 
 if [[ "$JAVA_HOME" ]]; then

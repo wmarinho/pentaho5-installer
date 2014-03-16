@@ -2,8 +2,8 @@
 pwd=`pwd`
 
 if [ "$(id -u)" == "0" ]; then
-        sh $pwd/scripts/uninstall.sh
+        $pwd/scripts/uninstall.sh
 else
-        echo "Necessário executar como root. Utilize: sudo ./install"
+        echo "Necessário executar como root. Utilize: sudo ./uninstall"
 fi
 
