@@ -90,7 +90,7 @@ function setparam {
         replace_config "\$Xms_32 \$Xmx_32" "$jvm_memory" "$start_pentaho_path_tmp"
    fi
 
-   read -p "Parâmetros adicionais em (CATALINA_OPTS):" cat_opts
+   read -p "Parâmetros opcionais (-Dfile.encoding=utf8 -Djava.awt.headless=true) :" cat_opts
    if [ "$cat_opts" ]; then
 	replace_config "\$cat_opts" "$cat_opts" "$start_pentaho_path_tmp"
    fi
@@ -116,10 +116,11 @@ function initonboot {
         				if [ "$apply" == "" ] || [ "$apply" == "y" ] || [ "$apply" == "Y" ]; then
 	                			mv  "$install_dir/config/init_pentaho.tmp" "/etc/init.d/pentaho"
 						chmod +x "/etc/init.d/pentaho"
-						chkconfig pentaho on
+						#chkconfig pentaho on
 						
                 				echo "Configuração de inicialização aplicada"
 						echo "Iniciando pentaho"
+						chown -R "$username":"$username" $install_dir
 			                        service pentaho start
                         		        echo "Verificando log ..."
                                			tail -f "$install_dir/biserver-ce/tomcat/logs/catalina.out"	
@@ -135,8 +136,9 @@ function initonboot {
                         if [ "$apply" == "" ] || [ "$apply" == "y" ] || [ "$apply" == "Y" ]; then
                                mv  "$install_dir/config/init_pentaho.tmp" "/etc/init.d/pentaho"
 			       chmod +x "/etc/init.d/pentaho"
-			       chkconfig pentaho on 
+			       #chkconfig pentaho on 
                                echo "Configuração de inicialização aplicada"
+			       chown -R "$username":"$username" $install_dir
 			       echo "Iniciando pentaho"
 			       service pentaho start
 			       echo "Verificando log ..."

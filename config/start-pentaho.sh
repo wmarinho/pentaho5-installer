@@ -14,7 +14,7 @@ Xms_64="-Xms2048m"
 Xmx_64="-Xmx1024m"
 Xms_32="-Xms256m"
 Xmx_32="-Xmx768m"
-$cat_opts=""
+cat_opts=""
 
 . "$DIR/set-pentaho-env.sh"
 

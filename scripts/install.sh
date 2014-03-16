@@ -58,7 +58,7 @@ function install {
 	        else
                		showinfo "Info" "wget $biserver_install_url -O $install_src_dir/biserver-ce-5.0.1-stable.zip" $loginfo
                		read -p "Executar comando? (y/n): " yn
-			if ["$yn" == "" ] ||  [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then		      
+			if [ "$yn" == "" ] ||  [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then		      
 		       		`wget "$biserver_install_url" -O "$install_src_dir/biserver-ce-5.0.1-stable.zip"`
  			fi
 		fi
@@ -69,11 +69,19 @@ function install {
 		cp -r scripts $install_dir
 		cp -r lib  $install_dir
 		chown -R "$username":"$username" "$install_dir"
+		create_uninstall
                 sh ./scripts/setup.sh $install_dir $username
 		;;
     esac
 }
 
+function create_uninstall {
+	uninstall_file="scripts/_uninstall.sh"
+	echo "#!/bin/bash" > $uninstall_file
+	echo "userdel -f -r $username" >> $uninstall_file
+	echo "rm /etc/init.d/pentaho" >> $uninstall_file
+
+}
 
 
 #while getopts c:hin: opt
