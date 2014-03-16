@@ -7,7 +7,7 @@
 drop database if exists quartz;
 drop user if exists pentaho_user;
 
-CREATE USER pentaho_user PASSWORD 'password';
+CREATE USER pentaho_user PASSWORD '@@pentaho_user@@';
 
 CREATE DATABASE quartz  WITH OWNER = pentaho_user  ENCODING = 'UTF8' TABLESPACE = pg_default;
 
@@ -19,6 +19,7 @@ GRANT ALL ON DATABASE quartz to pentaho_user;
 
 begin;
 
+drop table if exists "QRTZ";
 drop table if exists qrtz5_job_listeners;
 drop table if exists qrtz5_trigger_listeners;
 drop table if exists qrtz5_fired_triggers;
@@ -32,6 +33,7 @@ drop table if exists qrtz5_triggers;
 drop table if exists qrtz5_job_details;
 drop table if exists qrtz5_calendars;
 
+CREATE TABLE "QRTZ" ( NAME VARCHAR(200) NOT NULL, PRIMARY KEY (NAME) );
 CREATE TABLE qrtz5_job_details
   (
     JOB_NAME  VARCHAR(200) NOT NULL,
@@ -174,6 +176,7 @@ INSERT INTO qrtz5_locks values('CALENDAR_ACCESS');
 INSERT INTO qrtz5_locks values('STATE_ACCESS');
 INSERT INTO qrtz5_locks values('MISFIRE_ACCESS');
 
+ALTER TABLE "QRTZ" OWNER TO pentaho_user;
 ALTER TABLE qrtz5_job_listeners OWNER TO pentaho_user;
 ALTER TABLE qrtz5_trigger_listeners OWNER TO pentaho_user;
 ALTER TABLE qrtz5_fired_triggers OWNER TO pentaho_user;

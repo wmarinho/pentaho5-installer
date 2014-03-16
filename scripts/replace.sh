@@ -17,8 +17,8 @@ case "$opts" in
 ;;
 "-path")
 files=`grep -rl $str_search $file_pattern`
-echo $files
-#echo $files | /usr/bin/xargs  /bin/sed $infile 's/'$str_search'/'$str_replace'/g'
+#echo $files
+echo $files | /usr/bin/xargs  /bin/sed $infile 's/'$str_search'/'$str_replace'/g'
 ;;
 "-file_pattern")
 find . -name $file_pattern -type f -print0 | xargs -0 /bin/sed $infile 's/'$str_search'/'$str_replace'/g'

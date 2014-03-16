@@ -2,14 +2,14 @@
 <Context path="/pentaho" docbase="webapps/pentaho/">
 	<Resource name="jdbc/Hibernate" auth="Container" type="javax.sql.DataSource"
 		factory="org.apache.commons.dbcp.BasicDataSourceFactory" maxActive="20" maxIdle="5"
-		maxWait="10000" username="hibuser" password="password"
-		driverClassName="org.hsqldb.jdbcDriver" url="jdbc:hsqldb:hsql://localhost/hibernate"
-		validationQuery="select count(*) from INFORMATION_SCHEMA.SYSTEM_SEQUENCES" />
+		maxWait="10000" username="hibuser" password="@@hibuser@@"
+		driverClassName="org.postgresql.Driver" url="jdbc:postgresql://localhost:5432/hibernate"
+		validationQuery="select 1" />
 		
 	<Resource name="jdbc/Quartz" auth="Container" type="javax.sql.DataSource"
 		factory="org.apache.commons.dbcp.BasicDataSourceFactory" maxActive="20" maxIdle="5"
-		maxWait="10000" username="pentaho_user" password="password"
-		driverClassName="org.hsqldb.jdbcDriver" url="jdbc:hsqldb:hsql://localhost/quartz"
-		validationQuery="select count(*) from INFORMATION_SCHEMA.SYSTEM_SEQUENCES"/>
+		maxWait="10000" username="pentaho_user" password="@@pentaho_user@@"
+		driverClassName="org.postgresql.Driver" url="jdbc:postgresql://localhost:5432/quartz"
+		validationQuery="select 1"/>
 
 </Context>

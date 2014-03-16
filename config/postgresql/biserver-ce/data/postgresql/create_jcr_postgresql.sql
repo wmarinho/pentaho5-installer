@@ -7,7 +7,7 @@
 drop database if exists jackrabbit;
 drop user if exists jcr_user;
 
-CREATE USER jcr_user PASSWORD 'password';
+CREATE USER jcr_user PASSWORD '@@jcr_user@@';
 
 CREATE DATABASE jackrabbit WITH OWNER = jcr_user ENCODING = 'UTF8' TABLESPACE = pg_default;
 

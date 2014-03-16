@@ -7,7 +7,7 @@
 drop database if exists hibernate;
 drop user if exists hibuser;
 
-CREATE USER hibuser PASSWORD 'password';
+CREATE USER hibuser PASSWORD '@@hibuser@@';
 
 CREATE DATABASE hibernate WITH OWNER = hibuser ENCODING = 'UTF8' TABLESPACE = pg_default;
 
