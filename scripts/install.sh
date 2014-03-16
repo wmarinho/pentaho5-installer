@@ -113,8 +113,7 @@ if [[ "$_java" ]]; then
     version=$("$_java" -version 2>&1 | awk -F '"' '/version/ {print $2}')
     showinfo "Info" "Versão $version" $loginfo
     if [[ "$version" < "1.7" ]]; then
-        echo Erro: Instalação cancelada. Necessário java versão 1.7
-        exit 0
+        prompt "Recomendado upgrade para java versão 1.7. Confinuar? (y/n) "
 
     fi
 
