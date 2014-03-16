@@ -55,7 +55,7 @@ function install {
                if [ -f "$install_src_dir/biserver-ce-5.0.1-stable.zip" ]; then
 		 showinfo "Info" "Arquivo já existe"  $loginfo
 	        else
-               		showinfo "Info" "wget --progress=bar $biserver_install_url -O $install_src_dir/biserver-ce-5.0.1-stable.zip" $loginfo
+               		showinfo "Info" "wget -nv $biserver_install_url -O $install_src_dir/biserver-ce-5.0.1-stable.zip" $loginfo
                		read -p "Executar comando? (y/n): " yn
 			if [ "$yn" == "" ] ||  [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then		      
 		       		`wget "$biserver_install_url" -O "$install_src_dir/biserver-ce-5.0.1-stable.zip"`
