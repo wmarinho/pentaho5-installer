@@ -10,8 +10,8 @@ cd $DIR_REL
 DIR=`pwd`
 cd -
 
-Xms_64="-Xms2048m"
-Xmx_64="-Xmx1024m"
+Xms_64="-Xmx2048m"
+Xmx_64="-Xms1024m"
 Xms_32="-Xms256m"
 Xmx_32="-Xmx768m"
 cat_opts=""

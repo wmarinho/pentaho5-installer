@@ -6,7 +6,7 @@ echo "##########################################################"
 install_dir=/opt/pentaho
 username=pentaho
 
-jvm_memory="-Xms2048m -Xmx1024m"
+jvm_memory="-Xmx2048m -Xms1024m"
 
 if [ -n "$1" ]; then
 	install_dir=$1
@@ -28,6 +28,7 @@ fi
 
 start_config_path="$install_dir/config/start-pentaho.sh"
 start_pentaho_path="$install_dir/biserver-ce/start-pentaho.sh"
+
 start_pentaho_path_tmp="$install_dir/biserver-ce/start-pentaho.sh.tmp"
 stop_pentaho_path="$install_dir/biserver-ce/stop-pentaho.sh"
 
@@ -64,17 +65,17 @@ function setparam {
    echo "------------------------------------------"
    echo "Total de memória: ${MemTotal} MB / Memória livre: ${MemFree} MB"
 
-     if [ "${MemTotal}" -le 768 ]; then 	jvm_memory="-Xms512m -Xmx256m" 
-   elif [ "${MemTotal}" -le 1024 ]; then	jvm_memory="-Xms768m -Xmx256m"
-   elif [ "${MemTotal}" -le 1576 ]; then	jvm_memory="-Xms1024m -Xmx512m"
-   elif [ "${MemTotal}" -le 2048 ]; then	jvm_memory="-Xms1576m -Xmx768m"
-   elif [ "${MemTotal}" -le 3072 ]; then	jvm_memory="-Xms2048m -Xmx1024m"
-   elif [ "${MemTotal}" -le 4096 ]; then	jvm_memory="-Xms3072m -Xmx1576m"
-   elif [ "${MemTotal}" -le 6144 ]; then	jvm_memory="-Xms4096m -Xmx2048m"
-   elif [ "${MemTotal}" -le 8192 ]; then	jvm_memory="-Xms6144m -Xmx3072m" 
-   elif [ "${MemTotal}" -le 12288 ]; then 	jvm_memory="-Xms8192m -Xmx4096m"
-   elif [ "${MemTotal}" -le 16384 ]; then 	jvm_memory="-Xms12288m -Xmx6144m"
-   else 					jvm_memory="-Xms16384m -Xmx8192m"
+     if [ "${MemTotal}" -le 768 ]; then 	jvm_memory="-Xmx512m -Xms256m" 
+   elif [ "${MemTotal}" -le 1024 ]; then	jvm_memory="-Xmx768m -Xms256m"
+   elif [ "${MemTotal}" -le 1576 ]; then	jvm_memory="-Xmx1024m -Xms512m"
+   elif [ "${MemTotal}" -le 2048 ]; then	jvm_memory="-Xmx1576m -Xms768m"
+   elif [ "${MemTotal}" -le 3072 ]; then	jvm_memory="-Xmx2048m -Xms1024m"
+   elif [ "${MemTotal}" -le 4096 ]; then	jvm_memory="-Xmx3072m -Xms1576m"
+   elif [ "${MemTotal}" -le 6144 ]; then	jvm_memory="-Xmx4096m -Xms2048m"
+   elif [ "${MemTotal}" -le 8192 ]; then	jvm_memory="-Xmx6144m -Xms3072m" 
+   elif [ "${MemTotal}" -le 12288 ]; then 	jvm_memory="-Xmx8192m -Xms4096m"
+   elif [ "${MemTotal}" -le 16384 ]; then 	jvm_memory="-Xmx12288m -Xms6144m"
+   else 					jvm_memory="-Xmx16384m -Xms8192m"
    fi   
 
    read -p "Tecle ENTER para confirmar ou digite a configuração desejada [$jvm_memory]: " memory
