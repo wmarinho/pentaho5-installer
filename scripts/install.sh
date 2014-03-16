@@ -79,6 +79,7 @@ function create_uninstall {
 	uninstall_file="scripts/_uninstall.sh"
 	echo "#!/bin/bash" > $uninstall_file
 	echo "userdel -f -r $username" >> $uninstall_file
+	echo "rm -rf $install_dir"
 	echo "rm /etc/init.d/pentaho" >> $uninstall_file
 
 }
