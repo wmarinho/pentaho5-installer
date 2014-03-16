@@ -6,7 +6,7 @@ PWD=`pwd`
 install_opt="$1"
 install_src_dir="$pentaho_dir/src"
 username=pentaho
-
+set -e
 
 
 
@@ -35,7 +35,7 @@ function showinfo {
 function prompt {
 	read -p "$1" yn
         if [ "$yn" == "n" ] || [ "$yn" == "N" ]; then
-            exit 0;
+            exit 0
         fi
 }
 
@@ -112,7 +112,7 @@ if [[ "$_java" ]]; then
 
 else
     echo Erro: Instalação cancelada. Necessário instalação do java
-    exit 1
+    exit 0
 fi
 
 if [[ "$JAVA_HOME" ]]; then
