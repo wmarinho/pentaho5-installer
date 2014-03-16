@@ -113,7 +113,9 @@ if [[ "$_java" ]]; then
     version=$("$_java" -version 2>&1 | awk -F '"' '/version/ {print $2}')
     showinfo "Info" "Versão $version" $loginfo
     if [[ "$version" < "1.7" ]]; then
-        prompt "Recomendado upgrade para java versão 1.7. Confinuar? (y/n) "
+        echo "Necessário upgrade para java versão 1.7"
+	echo "Para Amazon Lixux AMI, utilize: sudo yum install java-1.7.0-openjdk && sudo alternatives --config java"
+	exit 0
 
     fi
 
