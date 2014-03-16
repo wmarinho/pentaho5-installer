@@ -120,11 +120,14 @@ function initonboot {
 						#chkconfig pentaho on
 						
                 				echo "Configuração de inicialização aplicada"
-						echo "Iniciando pentaho"
+						echo "Iniciando pentaho: sudo service pentaho start"
 						chown -R "$username":"$username" $install_dir
 			                        service pentaho start
-                        		        echo "Verificando log ..."
-                               			tail -f "$install_dir/biserver-ce/tomcat/logs/catalina.out"	
+						echo "Para verificar o log, utilize: "
+						echo "sudo tail -f $install_dir/biserver-ce/tomcat/logs/catalina.out"
+						echo "Pare o serviço utilizando: sudo service pentaho stop"
+                        		        #echo "Verificando log ..."
+                               			#tail -f "$install_dir/biserver-ce/tomcat/logs/catalina.out"	
 										
         				fi
 				fi
@@ -137,13 +140,17 @@ function initonboot {
                         if [ "$apply" == "" ] || [ "$apply" == "y" ] || [ "$apply" == "Y" ]; then
                                mv  "$install_dir/config/init_pentaho.tmp" "/etc/init.d/pentaho"
 			       chmod +x "/etc/init.d/pentaho"
-			       #chkconfig pentaho on 
-                               echo "Configuração de inicialização aplicada"
-			       chown -R "$username":"$username" $install_dir
-			       echo "Iniciando pentaho"
-			       service pentaho start
-			       echo "Verificando log ..."
-			       tail -f "$install_dir/biserver-ce/tomcat/logs/catalina.out"
+			       #chkconfig pentaho on
+				 echo "Configuração de inicialização aplicada"
+                                 echo "Iniciando pentaho: sudo service pentaho start"
+                                 chown -R "$username":"$username" $install_dir
+                                 service pentaho start
+                                 echo "Para verificar o log, utilize: "
+                                 echo "sudo tail -f $install_dir/biserver-ce/tomcat/logs/catalina.out"
+                                 echo "Pare o serviço utilizando: sudo service pentaho stop"
+                                 #echo "Verificando log ..."
+                                 #tail -f "$install_dir/biserver-ce/tomcat/logs/catalina.out"
+ 
                         fi
 			
 		fi
