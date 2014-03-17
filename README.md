@@ -1,4 +1,8 @@
-#Procedimento de instalação do servidor Pentaho CE 5
+#Instalação e Configuração do servidor Pentaho CE 5
+
+A proposta deste projeto é popularizar e estimular a utilização do Pentaho como solução de BI Open Source. Após várias instalações e testes decidi criar um "instalador" na tentativa de minimizar a intervenção manual nos arquivos de configuração do ambiente. A versão 5 trouxe muitas novidades e mudanças de conceito, tornando-se um grande desafio entender detalhes da configuração. Trabalho com Pentaho há menos de 1 ano, e não sou expert na criação de bash scripts. Portanto, perdoem eventuais erros e agradeço muito as contribuições/correções/sugestões. 
+
+ATENÇÃO: AINDA É UM PROJETO EXPERIMENTAL, E RECOMENDO FORTEMENTE *NÃO* UTILIZAR EM AMBIENTE DE PRODUÇÃO, NÃO ME RESPONSABILIZO POR EVENTUAIS DANOS AO AMBIENTE. 
 
 O procedimento de instalação foi testado em uma instância EC2 Amazon, 64 bits, baseada no RedHat.
 
@@ -10,7 +14,22 @@ cat /proc/version
 Linux version 3.4.76-65.111.amzn1.x86_64 (mockbuild@gobi-build-31004) (gcc version 4.6.3 20120306 (Red Hat 4.6.3-2) (GCC) ) #1 SMP
 </pre>
 
-##Preparação do ambiente
+## Instalação e Configuração automatizada
+
+
+
+###Instalar a partir do repositório Git
+<pre>
+sudo su -
+git clone https://github.com/wmarinho/pentaho5.git
+cd pentaho5
+./install
+</pre>
+Para depurar o código (ou documentar os comandos do bash), adicione o comando "set -x" após ```#!/bin/bash```
+
+Neste caso, desconsiderar procedimentos a seguir.
+
+## Instalação e configuração manual
 
 ###Criação do usuário pentaho
 Referência: [infocenter.pentaho.com](http://infocenter.pentaho.com/help/topic/install_manual/task_set_environment.html)
@@ -41,7 +60,7 @@ export PENTAHO_JAVA_HOME=/usr/lib/jvm/java
 
 ###Instalação do Pentaho 5 CE
 
-####1. Instalar a partir do site
+#### Instalar a partir do site
 * Acessar [community.pentaho.com](http://community.pentaho.com/) ou
 
 * [Download direto do Pentaho CE versão 5.0.1](https://sourceforge.net/projects/pentaho/files/Business%20Intelligence%20Server/5.0.1-stable/) ou
@@ -58,14 +77,6 @@ cd /opt/pentaho
 unzip biserver-ce-5.0.1-stable.zip .
 </pre>
 
-####2. Instalar a partir do repositório Git
-<pre>
-sudo su -
-git clone https://github.com/wmarinho/pentaho5.git
-cd pentaho5
-./install
-</pre>
-Neste caso, desconsiderar procedimentos a seguir.
 
 ###Ajustar parâmentros de inicialização do Tomcat 
 
