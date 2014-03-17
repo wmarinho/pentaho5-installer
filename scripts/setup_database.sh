@@ -12,6 +12,7 @@ install_dir="/opt/pentaho"
 biserver_dir="$install_dir/biserver-ce"
 db_user="postgres"
 db_host="localhost"
+db_port="5432"
 #db_param="-U $db_user -h $db_host"
 db_param=""
 
@@ -26,8 +27,19 @@ if [ "$db" ]; then
 	database=$db
 fi
 
+
+echo "Verificando conexão com $database. Executando: nc -zv $db_host $db_port"
+
+nc -zv $db_host $db_port
+if [ "$?" -ne "0" ]; then
+	echo "Erro: Instalação cancelada. Falha na conexão com $database $db_host:$db_port ..."
+		
+	exit 0
+fi	
+
 if [ "$database" == "postgresql" ]; then
-	echo Iniciando configuração do $database
+	echo "Iniciando configuração do $database"
+	
 else
 	echo "Opção inválida. Somente postgresql disponível"
 	exit 0;
