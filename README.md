@@ -25,7 +25,7 @@ git clone https://github.com/wmarinho/pentaho5.git
 cd pentaho5
 ./install
 </pre>
-Para depurar o código (ou documentar os comandos do bash), adicione o comando "set -x" após ```#!/bin/bash```
+Para depurar o código (ou documentar os comandos do bash), adicione o comando ```set -x``` após ```#!/bin/bash```
 
 Neste caso, desconsiderar procedimentos a seguir.
 
