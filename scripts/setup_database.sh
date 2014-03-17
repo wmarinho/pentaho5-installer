@@ -33,7 +33,6 @@ else
 	exit 0;
 fi
 
-sql_script_dir="$biserver_dir/data/$database"
 db_bkp_dir="/tmp/bkp/$database"
 pentaho_bkp_dir="/tmp/bkp/pentaho-biserver"
 
@@ -89,10 +88,10 @@ function restore_pentaho {
 }
 
 backup_db
-backup_pentaho
+#backup_pentaho
 #db_restore
 
-biserver_dir_tmp="$PWD/config/postgresql/biserver-ce-tmp"
+biserver_dir_tmp="/tmp/biserver-ce-tmp"
 db_config_dir="$PWD/config/${database}/biserver-ce"
 
 cp -r $db_config_dir $biserver_dir_tmp
@@ -102,8 +101,10 @@ cp -r $db_config_dir $biserver_dir_tmp
 
 cp -r $biserver_dir_tmp/* $biserver_dir/
 
+sql_script_dir="$biserver_dir_tmp/data/$database"
+
 if [ -f "$sql_script_dir/create_quartz_postgresql.sql" ]; then
-	su - $db_user -c "psql $db_param < $sql_script_dir/create_quartz_postgresql.sql"
+	su - $db_user -c "psql $db_param < $biserver_dir_tmp/create_quartz_postgresql.sql"
 fi
 
 if [ -f "$sql_script_dir/create_repository_postgresql.sql" ]; then
