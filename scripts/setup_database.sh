@@ -88,8 +88,7 @@ function restore_pentaho {
 }
 
 backup_db
-#backup_pentaho
-#db_restore
+backup_pentaho
 
 biserver_dir_tmp="/tmp/biserver-ce-tmp"
 db_config_dir="$PWD/config/${database}/biserver-ce"
@@ -104,7 +103,7 @@ cp -r $biserver_dir_tmp/* $biserver_dir/
 sql_script_dir="$biserver_dir_tmp/data/$database"
 
 if [ -f "$sql_script_dir/create_quartz_postgresql.sql" ]; then
-	su - $db_user -c "psql $db_param < $biserver_dir_tmp/create_quartz_postgresql.sql"
+	su - $db_user -c "psql $db_param < $sql_script_dir/create_quartz_postgresql.sql"
 fi
 
 if [ -f "$sql_script_dir/create_repository_postgresql.sql" ]; then
