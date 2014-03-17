@@ -123,6 +123,9 @@ elif type -p java; then
     _java=java
 else
     echo "Erro: Instalação cancelada. java não encontrado"
+    echo "Para RedHat/CentOS, utilize: sudo yum install java-1.7.0-openjdk && sudo alternatives --config java"
+   
+   echo "Para Ubuntu, utilize:  sudo apt-get install openjdk-7-jre-headless"
     exit 0    
 fi
 
