@@ -1,11 +1,12 @@
 #!/bin/bash
 
-pentaho_dir=/opt/pentaho
+pentaho_dir="/opt/pentaho"
 loginfo=debug #none | debug
 PWD=`pwd`
 install_opt="$1"
 install_src_dir="$pentaho_dir/src"
-username=pentaho
+username="pentaho"
+database="postgresql"
 #set -e
 
 chmod +x $PWD/scripts/*.sh
@@ -72,6 +73,20 @@ function install {
 		chown -R "$username":"$username" "$install_dir"
 		create_uninstall
                 ./scripts/setup.sh $install_dir $username
+		read -p "Deseja configurar banco de dados? (y/n): " yn
+		if [ "$yn" == "" ] || [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then 
+			./scripts/setup_database.sh $install_dir
+		fi
+
+		#echo "Iniciando pentaho: sudo service pentaho start"
+                #chown -R "$username":"$username" $install_dir
+                #service pentaho start
+                #echo "Para verificar o log, utilize: "
+                #echo "sudo tail -f $install_dir/biserver-ce/tomcat/logs/catalina.out"
+                #echo "Pare o serviço utilizando: sudo service pentaho stop"
+                #echo "Verificando log ..."
+                #tail -f "$install_dir/biserver-ce/tomcat/logs/catalina.out"
+
 		;;
     esac
 }

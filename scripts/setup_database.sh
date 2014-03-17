@@ -1,10 +1,15 @@
 #!/bin/bash -x
 
+echo "##########################################################"
+echo "##########  CONFIGURAÇÃO DE BANCO DE DADOS ###############"
+echo "##########################################################"
+
 PWD=`pwd`
 
-database="postgres"
+database="postgresql"
 datetime=`date +"%Y%m%d-%H%M"`
-install_dir="/opt/pentaho/biserver-ce"
+install_dir="/opt/pentaho"
+biserver_dir="$install_dir/biserver-ce"
 db_user="postgres"
 db_host="localhost"
 #db_param="-U $db_user -h $db_host"
@@ -14,17 +19,21 @@ db_param=""
 if [ "$1" ]; then
         install_dir="$1"
 fi
-if [ "$2" ]; then
-        database="$2"
-fi
-if [ "$3" ]; then
-        db_user="$3"
-fi
-if [ "$4" ]; then
-        db_host="$4"
+
+
+read -p "Tecle ENTER para confirmar ou selecione o banco desejado [$database]:  " db
+if [ "$db" ]; then
+	database=$db
 fi
 
-sql_script_dir="$install_dir/biserver-ce/data/$database"
+if [ "$database" == "postgresql" ]; then
+	echo Iniciando configuração do $database
+else
+	echo "Opção inválida. Somente postgresql disponível"
+	exit 0;
+fi
+
+sql_script_dir="$biserver_dir/data/$database"
 db_bkp_dir="/tmp/pentaho/bkp/$database"
 
 
@@ -65,10 +74,15 @@ function db_restore {
 db_backup
 #db_restore
 
-#cp -r $PWD/config/postgresql/biserver-ce $PWD/config/postgresql/biserver-ce-tmp
+biserver_dir_tmp="$PWD/config/postgresql/biserver-ce-tmp"
+db_config_dir="$PWD/config/${database}/biserver-ce"
 
+cp -r $db_config_dir $biserver_dir_tmp
 
+##INICIO CONFIGURAÇÃO 
+##FIM CONFIGURAÇÃO
 
+cp -r $biserver_dir_tmp/* $biserver_dir/
 
 if [ -f "$sql_script_dir/create_quartz_postgresql.sql" ]; then
 	su - $db_user -c "psql $db_param < $sql_script_dir/create_quartz_postgresql.sql"
@@ -82,6 +96,10 @@ if [ -f "$sql_script_dir/create_jcr_postgresql.sql" ]; then
        su - $db_user -c "psql $db_param < $sql_script_dir/create_jcr_postgresql.sql"
 fi
 
-#cp -r $PWD/config/postgresql/biserver-ce-tmp/* $install_dir/biserver-ce/*
+read -p "Deseja restaurar backup do ${database}? (y/n): " yn
+if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
+	db_restore
+fi
 
+rm -rf $biserver_dir_tmp
 
