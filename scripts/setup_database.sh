@@ -33,7 +33,9 @@ echo "Verificando conexão com $database. Executando: nc -zv $db_host $db_port"
 nc -zv $db_host $db_port
 if [ "$?" -ne "0" ]; then
 	echo "Erro: Instalação cancelada. Falha na conexão com $database $db_host:$db_port ..."
-		
+	echo "Para instalação local utilizar: "
+	echo "RedHat/Centos: sudo yum install postgresql"		
+	echo "Ubuntu: sudo apt-get install postgresql"		
 	exit 0
 fi	
 
@@ -45,7 +47,7 @@ else
 	exit 0;
 fi
 
-db_bkp_dir="/tmp/bkp/$database"
+db_bkp_dir="/tmp/$database"
 pentaho_bkp_dir="/tmp/bkp/pentaho-biserver"
 
 function backup_db {
