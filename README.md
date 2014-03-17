@@ -60,16 +60,12 @@ unzip biserver-ce-5.0.1-stable.zip .
 
 ####2. Instalar a partir do repositório Git
 <pre>
-cd /opt/pentaho
+sudo su -
 git clone https://github.com/wmarinho/pentaho5.git
 cd pentaho5
-unzip src/biserver-ce/biserver-ce-5.0.1-stable.zip .
+./install
 </pre>
-
-###Criar link simbólico
-<pre>
-ln -s /opt/pentaho/pentaho5/biserver-ce /opt/pentaho/biserver-ce
-</pre>
+Neste caso, desconsiderar procedimentos a seguir.
 
 ###Ajustar parâmentros de inicialização do Tomcat 
 
