@@ -152,6 +152,7 @@ if ! type -p unzip; then
 
 fi
 
+
 if [[ "$JAVA_HOME" ]]; then
      showinfo "Info" "JAVA_HOME=$JAVA_HOME" $loginfo
 else

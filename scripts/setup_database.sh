@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 echo "##########################################################"
 echo "##########  CONFIGURAÇÃO DE BANCO DE DADOS ###############"
@@ -34,21 +34,24 @@ else
 fi
 
 sql_script_dir="$biserver_dir/data/$database"
-db_bkp_dir="/tmp/pentaho/bkp/$database"
+db_bkp_dir="/tmp/bkp/$database"
+pentaho_bkp_dir="/tmp/bkp/pentaho-biserver"
 
-
-function db_backup {
+function backup_db {
 
 	echo "Fazendo backup do banco: $database ..."
 	if [ ! -d "$db_bkp_dir" ]; then
 		su - $db_user -c "mkdir -p $db_bkp_dir"
 	fi
+        if [ ! -d "$pentaho_bkp_dir" ]; then
+                mkdir -p $pentaho_bkp_dir
+        fi
 	
 	#su - $db_user -c "pg_dumpall $db_param > $db_bkp_dir/pq_dump_pentaho_${datetime}.sql"
 	su - $db_user -c "pg_dumpall $db_param | gzip > $db_bkp_dir/pq_dump_pentaho_${datetime}.sql.gz"
 }
 
-function db_restore {
+function restore_db {
 	echo "Restaurando banco: $database ..."
 	ls "$db_bkp_dir" | grep "pq_dump_pentaho_"
 	last_file=`ls -lrt "$db_bkp_dir" | awk '/pq_dump_pentaho_/ { f=$NF };END{ print f }'`
@@ -63,15 +66,30 @@ function db_restore {
 	fi
 }
 
-#function pentaho_backup {
+function backup_pentaho {
+	echo Salvando estado atual do Pentaho ...
+	echo "Pode levar alguns minutos ..."
+	tar -czf "$pentaho_bkp_dir/pentaho-biserver-ce-bkp-${datetime}.tgz" -C $install_dir "biserver-ce/"
+}
 
-#}
+function restore_pentaho {
+        echo "Restaurando pentaho em $install_dir ..."
+        ls "$pentaho_bkp_dir" | grep "pentaho-biserver-ce-bkp"
+        last_file=`ls -lrt "$pentaho_bkp_dir" | awk '/pentaho-biserver-ce-bkp/ { f=$NF };END{ print f }'`
 
-#function pentaho_restore {
+        read -p "Tecle ENTER para confirmar ou selecione o arquivo desejado [$last_file]: " backup_file
+        if [ ! "$backup_file" ]; then
+                backup_file=$last_file
+        fi
+        if [ -f "$pentaho_bkp_dir/$backup_file" ];then
+                echo "Restaurando $pentaho_bkp_dir/$backup_file em $install_dir ..."
+		echo "Pode levar alguns minutos ..."
+		tar -xzf "$pentaho_bkp_dir/$backup_file" -C $install_dir
+        fi
+}
 
-#}
-
-db_backup
+backup_db
+backup_pentaho
 #db_restore
 
 biserver_dir_tmp="$PWD/config/postgresql/biserver-ce-tmp"
@@ -98,7 +116,11 @@ fi
 
 read -p "Deseja restaurar backup do ${database}? (y/n): " yn
 if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
-	db_restore
+	restore_db
+fi
+read -p "Deseja restaurar pentaho? (y/n): " yn
+if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
+        restore_pentaho
 fi
 
 rm -rf $biserver_dir_tmp
