@@ -1,3 +1,4 @@
+#(Desconsiderar ... pendente de atualização)
 #Pentaho 5 CE com PostgreSQL 9.3
 
 Este diretório reúne todos os arquivos necessários para configuração do Pentaho CE, versão 5.0.1, com PostgreSQL 9.3. Detalhes da configuração podem ser consultados na documentação oficial, [infocenter.pentaho.com](http://infocenter.pentaho.com/)
