@@ -1,6 +1,6 @@
 #Instalação e Configuração do servidor Pentaho CE 5
 
-A proposta deste projeto é popularizar e estimular a utilização do Pentaho como solução de BI Open Source. Após várias instalações e testes decidi criar um "instalador" na tentativa de minimizar a intervenção manual nos arquivos de configuração do ambiente. A versão 5 trouxe muitas novidades e mudanças de conceito, tornando-se um grande desafio entender detalhes da configuração. Trabalho com Pentaho há menos de 1 ano, e não sou expert na criação de bash scripts. Portanto, perdoem eventuais erros e agradeço muito as contribuições/correções/sugestões. 
+A proposta deste projeto é popularizar e estimular a utilização do Pentaho como solução de BI Open Source. Após várias instalações e testes decidi criar um "instalador" na tentativa de minimizar a intervenção manual nos arquivos de configuração do ambiente. A versão 5 trouxe muitas novidades e mudanças de conceito, tornando-se um grande desafio entender detalhes da configuração. Estou começando a trabalhar com o Pentaho CE 5, e não sou expert na criação de bash scripts, portanto, perdoem eventuais erros e agradeço muito as contribuições/correções/sugestões. 
 
 ATENÇÃO: AINDA É UM PROJETO EXPERIMENTAL, E RECOMENDO FORTEMENTE *NÃO* UTILIZAR EM AMBIENTE DE PRODUÇÃO, NÃO ME RESPONSABILIZO POR EVENTUAIS DANOS AO AMBIENTE. 
 
