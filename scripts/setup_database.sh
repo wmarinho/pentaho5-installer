@@ -34,8 +34,9 @@ nc -zv $db_host $db_port
 if [ "$?" -ne "0" ]; then
 	echo "Erro: Instalação cancelada. Falha na conexão com $database $db_host:$db_port ..."
 	echo "Para instalação local utilizar: "
-	echo "RedHat/Centos: sudo yum install postgresql"		
-	echo "Ubuntu: sudo apt-get install postgresql"		
+	echo "RedHat/Centos: sudo yum install postgresql postgresql-server"		
+	echo "Ubuntu:  sudo apt-get install postgresql postgresql-contrib"		
+	
 	exit 0
 fi	
 
