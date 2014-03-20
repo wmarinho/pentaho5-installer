@@ -1,22 +1,42 @@
 #!/bin/bash
-
-pentaho_dir="/opt/pentaho"
-loginfo=debug #none | debug
-PWD=`pwd`
-install_opt="$1"
-install_src_dir="$pentaho_dir/src"
-username="pentaho"
-database="postgresql"
-#set -e
-
-chmod +x $PWD/scripts/*.sh
-
-biserver_install_url="http://downloads.sourceforge.net/project/pentaho/Business%20Intelligence%20Server/5.0.1-stable/biserver-ce-5.0.1-stable.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fpentaho%2Ffiles%2FBusiness%2520Intelligence%2520Server%2F5.0.1-stable%2F&ts=1394208071&use_mirror=ufpr"
-
 printf "\033c"
 echo "##########################################################"
 echo "##########  INSTACAÇÃO PENTAHO BISERVER CE ###############"
 echo "##########################################################"
+
+pentaho_dir="/opt/pentaho"
+loginfo=debug #none | debug
+PWD=`pwd`
+install_opt="biserver-ce"
+install_src_dir="$pentaho_dir/src"
+username="pentaho"
+database="postgresql"
+
+#set -e
+#chmod +x $PWD/scripts/*.sh
+
+#biserver_ce_5_0_1="http://downloads.sourceforge.net/project/pentaho/Business%20Intelligence%20Server/5.0.1-stable/biserver-ce-5.0.1-stable.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fpentaho%2Ffiles%2FBusiness%2520Intelligence%2520Server%2F5.0.1-stable%2F&ts=1394208071&use_mirror=ufpr"
+
+#biserver_ce_lastest="http://ci.pentaho.com/job/BISERVER-CE/lastSuccessfulBuild/artifact/assembly/dist/biserver-ce-TRUNK-SNAPSHOT-jenkins-BISERVER-CE-582.zip"
+
+#biserver_install_url="$biserver_ce_5_0_1"
+#biserver_install_url="$biserver_ce_lastest"
+
+biserver_tag="5.0.1-stable"
+
+if [ "$1" ]; then
+        biserver_tag="$1"
+fi
+echo $biserver_tag
+
+biserver_install_url="http://ufpr.dl.sourceforge.net/project/pentaho/Business%20Intelligence%20Server/$biserver_tag/biserver-ce-$biserver_tag.zip"
+
+trunk=`echo $biserver_tag | grep TRUNK | wc -l`
+echo $trunk
+if [ ! "$trunk" == "0" ]; then
+        biserver_install_url="http://ci.pentaho.com/job/BISERVER-CE/lastSuccessfulBuild/artifact/assembly/dist/biserver-ce-${biserver_tag}.zip"
+fi
+
 
 if [ "$install_opt" == "" ]; then
    install_opt="biserver-ce"
@@ -54,18 +74,18 @@ function install {
 			showinfo "Info" "Criando diretório $install_src_dir" $loginfo
 			`mkdir -p $install_src_dir`
 		fi		  
-               if [ -f "$install_src_dir/biserver-ce-5.0.1-stable.zip" ]; then
+               if [ -f "$install_src_dir/biserver-ce-$biserver_tag.zip" ]; then
 		 showinfo "Info" "Arquivo já existe"  $loginfo
 	        else
-               		showinfo "Info" "wget -nv $biserver_install_url -O $install_src_dir/biserver-ce-5.0.1-stable.zip" $loginfo
+               		showinfo "Info" "wget -nv $biserver_install_url -O $install_src_dir/biserver-ce-$biserver_tag.zip" $loginfo
                		read -p "Executar comando? (y/n): " yn
 			if [ "$yn" == "" ] ||  [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then		      
-		       		`wget "$biserver_install_url" -O "$install_src_dir/biserver-ce-5.0.1-stable.zip"`
+		       		`wget "$biserver_install_url" -O "$install_src_dir/biserver-ce-$biserver_tag.zip"`
  			fi
 		fi
 		showinfo "Info" "Descompactando pacote em $install_dir ..."  $loginfo
 		
-		/usr/bin/unzip "$install_src_dir/biserver-ce-5.0.1-stable.zip" -d "$install_dir"
+		/usr/bin/unzip "$install_src_dir/biserver-ce-$biserver_tag.zip" -d "$install_dir"
 		cp -r config $install_dir
 		cp -r etl $install_dir
 		cp -r scripts $install_dir
@@ -73,10 +93,6 @@ function install {
 		chown -R "$username":"$username" "$install_dir"
 		create_uninstall
                 ./scripts/setup.sh $install_dir $username
-		read -p "Deseja configurar banco de dados? (y/n): " yn
-		if [ "$yn" == "" ] || [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then 
-			./scripts/setup_database.sh $install_dir
-		fi
 
 		#echo "Iniciando pentaho: sudo service pentaho start"
                 #chown -R "$username":"$username" $install_dir

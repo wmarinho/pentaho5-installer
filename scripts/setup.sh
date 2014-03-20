@@ -178,3 +178,9 @@ if [ -f "$start_pentaho_path" ] && [ -f  "$start_config_path" ]; then
 else
 	echo Arquivo $start_pentaho_path ou $start_config_path não encontrado
 fi
+
+read -p "Deseja configurar banco de dados? (y/n): " yn
+                if [ "$yn" == "" ] || [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
+                        ./scripts/setup_database.sh $install_dir
+                fi
+

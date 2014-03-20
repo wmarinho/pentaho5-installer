@@ -15,7 +15,7 @@ db_host="localhost"
 db_port="5432"
 #db_param="-U $db_user -h $db_host"
 db_param=""
-
+bkp_tag=""
 
 if [ "$1" ]; then
         install_dir="$1"
@@ -28,17 +28,6 @@ if [ "$db" ]; then
 fi
 
 
-echo "Verificando conexão com $database. Executando: nc -zv $db_host $db_port"
-
-nc -zv $db_host $db_port
-if [ "$?" -ne "0" ]; then
-	echo "Erro: Instalação cancelada. Falha na conexão com $database $db_host:$db_port ..."
-	echo "Para instalação local utilizar: "
-	echo "RedHat/Centos: sudo yum install postgresql postgresql-server"		
-	echo "Ubuntu:  sudo apt-get install postgresql postgresql-contrib"		
-	
-	exit 0
-fi	
 
 if [ "$database" == "postgresql" ]; then
 	echo "Iniciando configuração do $database"
@@ -53,7 +42,8 @@ pentaho_bkp_dir="/tmp/bkp/pentaho-biserver"
 
 function backup_db {
 
-	echo "Fazendo backup do banco: $database ..."
+	echo "Fazendo backup do banco: $database"
+	read -p "Incluir tag, exemplo: v0.1 (opcional): " tag
 	if [ ! -d "$db_bkp_dir" ]; then
 		su - $db_user -c "mkdir -p $db_bkp_dir"
 	fi
@@ -62,13 +52,13 @@ function backup_db {
         fi
 	
 	#su - $db_user -c "pg_dumpall $db_param > $db_bkp_dir/pq_dump_pentaho_${datetime}.sql"
-	su - $db_user -c "pg_dumpall $db_param | gzip > $db_bkp_dir/pq_dump_pentaho_${datetime}.sql.gz"
+	su - $db_user -c "pg_dumpall -c $db_param | gzip > $db_bkp_dir/pentaho-bkp-${tag}-${database}-${datetime}.sql.gz"
 }
 
 function restore_db {
 	echo "Restaurando banco: $database ..."
-	ls "$db_bkp_dir" | grep "pq_dump_pentaho_"
-	last_file=`ls -lrt "$db_bkp_dir" | awk '/pq_dump_pentaho_/ { f=$NF };END{ print f }'`
+	ls "$db_bkp_dir" | grep "pentaho-bkp-"
+	last_file=`ls -lrt "$db_bkp_dir" | awk '/pentaho-bkp-/ { f=$NF };END{ print f }'`
 
 	read -p "Tecle ENTER para confirmar ou selecione o arquivo desejado [$last_file]: " backup_file
 	if [ ! "$backup_file" ]; then
@@ -81,15 +71,18 @@ function restore_db {
 }
 
 function backup_pentaho {
-	echo Salvando estado atual do Pentaho ...
-	echo "Pode levar alguns minutos ..."
-	tar -czf "$pentaho_bkp_dir/pentaho-biserver-ce-bkp-${datetime}.tgz" -C $install_dir "biserver-ce/"
+	read -p "Fazer backup do diretório de instalação do Pentaho? (y/n): " yn
+	if [ "$yn" == "" ] || [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
+		echo Salvando estado atual do Pentaho em $pentaho_bkp_dir ...
+		echo "Pode levar alguns minutos ..."
+		tar -czf "$pentaho_bkp_dir/pentaho-bkp-${tag}-biserver-ce-${datetime}.tgz" -C $install_dir "biserver-ce/"
+	fi
 }
 
 function restore_pentaho {
         echo "Restaurando pentaho em $install_dir ..."
-        ls "$pentaho_bkp_dir" | grep "pentaho-biserver-ce-bkp"
-        last_file=`ls -lrt "$pentaho_bkp_dir" | awk '/pentaho-biserver-ce-bkp/ { f=$NF };END{ print f }'`
+        ls "$pentaho_bkp_dir" | grep "pentaho-bkp-"
+        last_file=`ls -lrt "$pentaho_bkp_dir" | awk '/pentaho-bkp-/ { f=$NF };END{ print f }'`
 
         read -p "Tecle ENTER para confirmar ou selecione o arquivo desejado [$last_file]: " backup_file
         if [ ! "$backup_file" ]; then
@@ -102,41 +95,105 @@ function restore_pentaho {
         fi
 }
 
+genpasswd() {
+        local randompassLength
+        if [ $1 ]; then
+                randompassLength=$1
+        else
+                randompassLength=8
+        fi
+
+        pass=</dev/urandom tr -dc A-Za-z0-9 | head -c $randompassLength
+        echo $pass
+}
+
 backup_db
 backup_pentaho
 
 biserver_dir_tmp="/tmp/biserver-ce-tmp"
 db_config_dir="$PWD/config/${database}/biserver-ce"
 
-cp -r $db_config_dir $biserver_dir_tmp
 
 ##INICIO CONFIGURAÇÃO 
-##FIM CONFIGURAÇÃO
-
-cp -r $biserver_dir_tmp/* $biserver_dir/
-
-sql_script_dir="$biserver_dir_tmp/data/$database"
-
-if [ -f "$sql_script_dir/create_quartz_postgresql.sql" ]; then
-	su - $db_user -c "psql $db_param < $sql_script_dir/create_quartz_postgresql.sql"
+read -p "Informe Hostname ou IP do servidor $database [$db_host]: " host
+if [ "$host" ]; then
+	db_host="$host"
 fi
 
-if [ -f "$sql_script_dir/create_repository_postgresql.sql" ]; then
-       su - $db_user -c "psql $db_param < $sql_script_dir/create_repository_postgresql.sql"
+read -p "Informe a porta do servidor $database [$db_port]: " port
+if [ "$port" ]; then
+        db_port="$port"
 fi
 
-if [ -f "$sql_script_dir/create_jcr_postgresql.sql" ]; then
-       su - $db_user -c "psql $db_param < $sql_script_dir/create_jcr_postgresql.sql"
+echo "Verificando conexão com $database. Executando: nc -zv $db_host $db_port"
+nc -zv $db_host $db_port
+if [ "$?" -ne "0" ]; then
+        echo "Erro: Instalação cancelada. Falha na conexão com $database $db_host:$db_port ..."
+        echo "Favor verificar dados de conexão."
+        echo "Para instalação local utilizar: "
+        echo "RedHat/Centos: sudo yum install postgresql postgresql-server"
+        echo "Ubuntu:  sudo apt-get install postgresql postgresql-contrib"
+
+        exit 0
 fi
 
-read -p "Deseja restaurar backup do ${database}? (y/n): " yn
-if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
-	restore_db
-fi
-read -p "Deseja restaurar pentaho? (y/n): " yn
-if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
-        restore_pentaho
+read -p "Informe nome usuário com permissão (DROP, CREATE, GRANT) no banco $database [$db_user]: " user
+if [ "$user" ]; then
+        db_user="$user"
 fi
 
-rm -rf $biserver_dir_tmp
+read -s -p "Informe a senha do usuário $db_user : " pass
+if [ "$pass" ]; then
+        db_pass="$pass"
+fi
+echo ""
+echo "Gerando senhas para usuários no $database ..."
+psw_hibuser=`genpasswd`
+echo "hibuser=$psw_hibuser"
+psw_jcr_user=`genpasswd`
+echo "jcr_user=$psw_jcr_user"
+psw_pentaho_user=`genpasswd`
+echo "pentaho_user=$psw_pentaho_user"
 
+read -p "Aplicar configurações? (y/n): " yn
+if [ "$yn" == "" ] || [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
+
+	cp -r $db_config_dir $biserver_dir_tmp
+	
+	$PWD/scripts/replace.sh "localhost:5432" "$db_host:$db_port" -path "$biserver_dir_tmp/" -infile
+	$PWD/scripts/replace.sh "@@hibuser@@" "$psw_hibuser" -path "$biserver_dir_tmp/" -infile
+        $PWD/scripts/replace.sh "@@jcr_user@@" "$psw_jcr_user" -path "$biserver_dir_tmp/" -infile
+        $PWD/scripts/replace.sh "@@pentaho_user@@" "$psw_pentaho_user" -path "$biserver_dir_tmp/" -infile
+	echo "$biserver_dir/tomcat/conf/Catalina"
+        rm -rf "$biserver_dir/tomcat/conf/Catalina"
+	rm -rf "$biserver_dir/tomcat/temp"
+	rm -rf "$biserver_dir/tomcat/work"
+	rm -rf "$biserver_dir/tomcat/logs/*.*"
+
+	cp -r $biserver_dir_tmp/* $biserver_dir/
+
+	sql_script_dir="$biserver_dir_tmp/data/$database"
+
+	if [ -f "$sql_script_dir/create_quartz_postgresql.sql" ]; then
+		su - $db_user -c "psql $db_param < $sql_script_dir/create_quartz_postgresql.sql"
+	fi
+	
+	if [ -f "$sql_script_dir/create_repository_postgresql.sql" ]; then
+	       su - $db_user -c "psql $db_param < $sql_script_dir/create_repository_postgresql.sql"
+	fi
+	
+	if [ -f "$sql_script_dir/create_jcr_postgresql.sql" ]; then
+	       su - $db_user -c "psql $db_param < $sql_script_dir/create_jcr_postgresql.sql"
+	fi
+	
+	read -p "Deseja restaurar backup do ${database}? (y/n): " yn
+	if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
+		restore_db
+	fi
+	read -p "Deseja restaurar diretório de instalação do Pentaho? (y/n): " yn
+	if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
+	        restore_pentaho
+	fi
+	
+	rm -rf $biserver_dir_tmp
+fi			
