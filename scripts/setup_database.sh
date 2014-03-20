@@ -14,7 +14,7 @@ db_user="postgres"
 db_host="localhost"
 db_port="5432"
 #db_param="-U $db_user -h $db_host"
-db_param=""
+db_param="-U $db_user"
 bkp_tag=""
 
 if [ "$1" ]; then
@@ -52,7 +52,8 @@ function backup_db {
         fi
 	
 	#su - $db_user -c "pg_dumpall $db_param > $db_bkp_dir/pq_dump_pentaho_${datetime}.sql"
-	su - $db_user -c "pg_dumpall -c $db_param | gzip > $db_bkp_dir/pentaho-bkp-${tag}-${database}-${datetime}.sql.gz"
+	#su - $db_user -c "pg_dumpall -c $db_param | gzip > $db_bkp_dir/pentaho-bkp-${tag}-${database}-${datetime}.sql.gz"
+	pg_dumpall -c $db_param | gzip > $db_bkp_dir/pentaho-bkp-${tag}-${database}-${datetime}.sql.gz
 }
 
 function restore_db {
@@ -66,7 +67,8 @@ function restore_db {
 	fi
 	if [ -f "$db_bkp_dir/$backup_file" ];then
 		echo "Restaurando $db_bkp_dir/$backup_file ..."
-		su - $db_user -c "gzip -cd $db_bkp_dir/$backup_file | psql -q $db_param"
+		#su - $db_user -c "gzip -cd $db_bkp_dir/$backup_file | psql -q $db_param"
+		gzip -cd $db_bkp_dir/$backup_file | psql -q $db_param 
 	fi
 }
 
@@ -103,8 +105,8 @@ genpasswd() {
                 randompassLength=8
         fi
 
-        pass=</dev/urandom tr -dc A-Za-z0-9 | head -c $randompassLength
-        echo $pass
+        rand_psw=</dev/urandom tr -dc A-Za-z0-9 | head -c $randompassLength
+        echo $rand_pass
 }
 
 backup_db
@@ -147,6 +149,13 @@ if [ "$pass" ]; then
         db_pass="$pass"
 fi
 echo ""
+
+pgpass="$db_host:$db_port:$db_user:$db_pass"
+echo $pgpass > ~/.pgpass
+chmod 0600 ~/.pgpass
+
+#cat ~/.pgpass
+
 echo "Gerando senhas para usuários no $database ..."
 psw_hibuser=`genpasswd`
 echo "hibuser=$psw_hibuser"
@@ -175,15 +184,18 @@ if [ "$yn" == "" ] || [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 	sql_script_dir="$biserver_dir_tmp/data/$database"
 
 	if [ -f "$sql_script_dir/create_quartz_postgresql.sql" ]; then
-		su - $db_user -c "psql $db_param < $sql_script_dir/create_quartz_postgresql.sql"
+		#su - $db_user -c "psql $db_param < $sql_script_dir/create_quartz_postgresql.sql"
+		psql $db_param < $sql_script_dir/create_quartz_postgresql.sql
 	fi
 	
 	if [ -f "$sql_script_dir/create_repository_postgresql.sql" ]; then
-	       su - $db_user -c "psql $db_param < $sql_script_dir/create_repository_postgresql.sql"
+		#su - $db_user -c "psql $db_param < $sql_script_dir/create_repository_postgresql.sql"
+		psql $db_param < $sql_script_dir/create_repository_postgresql.sql
 	fi
 	
 	if [ -f "$sql_script_dir/create_jcr_postgresql.sql" ]; then
-	       su - $db_user -c "psql $db_param < $sql_script_dir/create_jcr_postgresql.sql"
+	       #su - $db_user -c "psql $db_param < $sql_script_dir/create_jcr_postgresql.sql"
+		psql $db_param < $sql_script_dir/create_jcr_postgresql.sql
 	fi
 	
 	read -p "Deseja restaurar backup do ${database}? (y/n): " yn
