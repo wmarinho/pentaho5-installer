@@ -4,18 +4,24 @@
 
 -- \connect postgres postgres
 
+ALTER DATABASE quartz  OWNER TO awsbiuser;
+
 drop database if exists quartz;
-drop user if exists pentaho_user;
+--drop user if exists pentaho_user;
+drop role if exists pentaho_user;
 
-CREATE USER pentaho_user PASSWORD '@@pentaho_user@@';
+--CREATE USER pentaho_user PASSWORD '@@pentaho_user@@';
+create role pentaho_user with password '@@pentaho_user@@' login;
 
-CREATE DATABASE quartz  WITH OWNER = pentaho_user  ENCODING = 'UTF8' TABLESPACE = pg_default;
+CREATE DATABASE quartz   ENCODING = 'UTF8' TABLESPACE = pg_default;
 
-GRANT ALL ON DATABASE quartz to pentaho_user;
+--ALTER DATABASE quartz OWNER TO pentaho_user;
+--GRANT ALL ON DATABASE quartz to pentaho_user;
 
 --End--
 --Begin Connect--
-\connect quartz pentaho_user
+--\connect quartz pentaho_user
+\connect quartz
 
 begin;
 
@@ -190,5 +196,7 @@ ALTER TABLE qrtz5_triggers OWNER TO pentaho_user;
 ALTER TABLE qrtz5_job_details OWNER TO pentaho_user;
 ALTER TABLE qrtz5_calendars OWNER TO pentaho_user;
 
+ALTER DATABASE quartz OWNER TO pentaho_user;
+GRANT ALL ON DATABASE quartz to pentaho_user;
 commit;
 --End Connect--

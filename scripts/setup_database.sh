@@ -109,8 +109,6 @@ genpasswd() {
         echo $rand_pass
 }
 
-backup_db
-backup_pentaho
 
 biserver_dir_tmp="/tmp/biserver-ce-tmp"
 db_config_dir="$PWD/config/${database}/biserver-ce"
@@ -150,7 +148,7 @@ if [ "$pass" ]; then
 fi
 echo ""
 
-pgpass="$db_host:$db_port:$db_user:$db_pass"
+pgpass="$db_host:$db_port:postgres:$db_user:$db_pass"
 echo $pgpass > ~/.pgpass
 chmod 0600 ~/.pgpass
 
@@ -166,23 +164,26 @@ echo "pentaho_user=$psw_pentaho_user"
 
 read -p "Aplicar configurações? (y/n): " yn
 if [ "$yn" == "" ] || [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
-
+	#backup_db
+	#backup_pentaho
 	cp -r $db_config_dir $biserver_dir_tmp
 	
 	$PWD/scripts/replace.sh "localhost:5432" "$db_host:$db_port" -path "$biserver_dir_tmp/" -infile
 	$PWD/scripts/replace.sh "@@hibuser@@" "$psw_hibuser" -path "$biserver_dir_tmp/" -infile
         $PWD/scripts/replace.sh "@@jcr_user@@" "$psw_jcr_user" -path "$biserver_dir_tmp/" -infile
         $PWD/scripts/replace.sh "@@pentaho_user@@" "$psw_pentaho_user" -path "$biserver_dir_tmp/" -infile
+	$PWD/scripts/replace.sh "awsbiuser" "$db_user" -path "$biserver_dir_tmp/" -infile
+
 	echo "$biserver_dir/tomcat/conf/Catalina"
         rm -rf "$biserver_dir/tomcat/conf/Catalina"
-	rm -rf "$biserver_dir/tomcat/temp"
-	rm -rf "$biserver_dir/tomcat/work"
+	rm -rf "$biserver_dir/tomcat/temp/*.*"
+	rm -rf "$biserver_dir/tomcat/work/*.*"
 	rm -rf "$biserver_dir/tomcat/logs/*.*"
 
 	cp -r $biserver_dir_tmp/* $biserver_dir/
 
 	sql_script_dir="$biserver_dir_tmp/data/$database"
-
+	db_param="-U $db_user -h $db_host -p $db_port -d postgres"
 	if [ -f "$sql_script_dir/create_quartz_postgresql.sql" ]; then
 		#su - $db_user -c "psql $db_param < $sql_script_dir/create_quartz_postgresql.sql"
 		psql $db_param < $sql_script_dir/create_quartz_postgresql.sql
@@ -198,14 +199,14 @@ if [ "$yn" == "" ] || [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
 		psql $db_param < $sql_script_dir/create_jcr_postgresql.sql
 	fi
 	
-	read -p "Deseja restaurar backup do ${database}? (y/n): " yn
-	if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
-		restore_db
-	fi
-	read -p "Deseja restaurar diretório de instalação do Pentaho? (y/n): " yn
-	if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
-	        restore_pentaho
-	fi
+	#read -p "Deseja restaurar backup do ${database}? (y/n): " yn
+	#if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
+	#		restore_db
+	#fi
+	#read -p "Deseja restaurar diretório de instalação do Pentaho? (y/n): " yn
+	#if [ "$yn" == "y" ] || [ "$yn" == "Y" ]; then
+	#        restore_pentaho
+	#fi
 	
 	rm -rf $biserver_dir_tmp
 fi			
