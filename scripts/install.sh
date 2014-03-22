@@ -82,13 +82,13 @@ function install {
 		showinfo "Info" "Descompactando pacote em $install_dir ..."  $loginfo
 		
 		/usr/bin/unzip "$install_src_dir/biserver-ce-$biserver_tag.zip" -d "$install_dir"
-		#cp -r config $install_dir
+		cp -r config $install_dir
 		#cp -r etl $install_dir
 		#cp -r scripts $install_dir
-		#cp -r lib  $install_dir
-		mkdir $install_dir/{config,etl,scripts,lib}
+		cp -r lib  $install_dir
+		mkdir $install_dir/{etl,scripts}
 		
-		chown -R "$username":"$username" "$install_dir"
+		chown -R "$username":"$username" "$install_dir/"
 		create_uninstall
                 ./scripts/setup.sh $install_dir $username
 
