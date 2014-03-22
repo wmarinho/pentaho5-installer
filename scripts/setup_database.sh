@@ -9,7 +9,6 @@ PWD=`pwd`
 database="postgresql"
 datetime=`date +"%Y%m%d-%H%M"`
 install_dir="/opt/pentaho"
-biserver_dir="$install_dir/biserver-ce"
 db_user="postgres"
 db_host="localhost"
 db_port="5432"
@@ -20,7 +19,7 @@ bkp_tag=""
 if [ "$1" ]; then
         install_dir="$1"
 fi
-
+biserver_dir="$install_dir/biserver-ce"
 
 read -p "Tecle ENTER para confirmar ou selecione o banco desejado [$database]:  " db
 if [ "$db" ]; then

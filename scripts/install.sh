@@ -8,7 +8,8 @@ pentaho_dir="/opt/pentaho"
 loginfo=debug #none | debug
 PWD=`pwd`
 install_opt="biserver-ce"
-install_src_dir="$pentaho_dir/src"
+#install_src_dir="$pentaho_dir/src"
+install_src_dir="$PWD/src"
 username="pentaho"
 database="postgresql"
 
@@ -66,7 +67,7 @@ function install {
     case "$1" in
 	"biserver-ce") 
 		showinfo "Info" "Iniciando instalação do biserver-ce" $loginfo
-		install_src_dir="$install_dir/src"
+		#install_src_dir="$install_dir/src"
 		showinfo "Info" "Baixando aplicação biserver-ce em $install_src_dir" $loginfo
 		if [ -d "$install_src_dir" ]; then			
 			prompt "Diretório $install_src_dir já existente. Tem certeza que deseja continuar? (y/n): "
