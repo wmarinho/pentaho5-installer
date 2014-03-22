@@ -16,12 +16,7 @@ database="postgresql"
 #set -e
 #chmod +x $PWD/scripts/*.sh
 
-#biserver_ce_5_0_1="http://downloads.sourceforge.net/project/pentaho/Business%20Intelligence%20Server/5.0.1-stable/biserver-ce-5.0.1-stable.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fpentaho%2Ffiles%2FBusiness%2520Intelligence%2520Server%2F5.0.1-stable%2F&ts=1394208071&use_mirror=ufpr"
 
-#biserver_ce_lastest="http://ci.pentaho.com/job/BISERVER-CE/lastSuccessfulBuild/artifact/assembly/dist/biserver-ce-TRUNK-SNAPSHOT-jenkins-BISERVER-CE-582.zip"
-
-#biserver_install_url="$biserver_ce_5_0_1"
-#biserver_install_url="$biserver_ce_lastest"
 
 biserver_tag="5.0.1-stable"
 
@@ -87,10 +82,12 @@ function install {
 		showinfo "Info" "Descompactando pacote em $install_dir ..."  $loginfo
 		
 		/usr/bin/unzip "$install_src_dir/biserver-ce-$biserver_tag.zip" -d "$install_dir"
-		cp -r config $install_dir
-		cp -r etl $install_dir
-		cp -r scripts $install_dir
-		cp -r lib  $install_dir
+		#cp -r config $install_dir
+		#cp -r etl $install_dir
+		#cp -r scripts $install_dir
+		#cp -r lib  $install_dir
+		mkdir $install_dir/{config,etl,scripts,lib}
+		
 		chown -R "$username":"$username" "$install_dir"
 		create_uninstall
                 ./scripts/setup.sh $install_dir $username
