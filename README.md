@@ -24,6 +24,62 @@ sudo su -
 git clone https://github.com/wmarinho/pentaho5.git
 cd pentaho5
 ./install
+##Procedimento executado no servidor awslnxbi01 (10.101.0.11)
+sudo su -
+git clone https://github.com/wmarinho/pentaho5.git
+cd pentaho5
+./install
+
+
+##########################################################
+##########  INSTACAÇÃO PENTAHO BISERVER CE ###############
+##########################################################
+5.0.1-stable
+Info: Verificando instalação do java
+Info: Versão 1.7.0_51
+/usr/bin/unzip
+Info: JAVA_HOME=/usr/lib/jvm/java
+Digite o nome do usuário pentaho: pentaho
+Tecle ENTER para confirmar ou digite o nome do usuário [pentaho]:
+Tecle ENTER para confirmar ou digite o diretório do usuário pentaho [/opt/pentaho]: /opt/pentaho
+Tecle ENTER para confirmar ou digite o caminho de instalação: [/opt/pentaho]? y
+Info: Iniciando instalação do biserver-ce
+Info: Baixando aplicação biserver-ce em /root/pentaho5-installer/src
+Diretório /root/pentaho5-installer/src já existente. Tem certeza que deseja continuar? (y/n):
+##########################################################
+##########  CONFIGURAÇÃO PENTAHO BISERVER CE #############
+##########################################################
+------------------------------------------
+Configurar parâmetros de memória para JVM.
+------------------------------------------
+Total de memória: 17083 MB / Memória livre: 85 MB
+Tecle ENTER para confirmar ou digite a configuração desejada [-Xmx2048m -Xms1024m]: -Xmx7g -Xms7g
+Parâmetros opcionais (-Dfile.encoding=utf8 -Djava.awt.headless=true) :-Dfile.encoding=utf8
+Deseja aplicar configuração de memória? (y/n) y
+Configuração aplicada
+----------------------------------------------------
+Preparando configuração de inicialização automática.
+----------------------------------------------------
+Arquivo de inicialização já existente. Deseja sobrescrever? (y/n): n
+Deseja configurar banco de dados? (y/n): y
+##########################################################
+##########  CONFIGURAÇÃO DE BANCO DE DADOS ###############
+##########################################################
+Tecle ENTER para confirmar ou selecione o banco desejado [postgresql]:
+Iniciando configuração do postgresql
+Informe Hostname ou IP do servidor postgresql [localhost]: localhost
+Informe a porta do servidor postgresql [5432]:
+Verificando conexão com postgresql. Executando: nc -zv localhost 5432
+Connection to localhost 5432 port [tcp/postgres] succeeded!
+Informe nome usuário com permissão (DROP, CREATE, GRANT) no banco postgresql [postgres]: postgres
+Informe a senha do usuário postgres : *******
+Gerando senhas para usuários no postgresql ...
+hibuser=*********
+jcr_user= *********
+pentaho_user= *********
+Aplicar configurações? (y/n): y
+
+
 </pre>
 Para depurar o código (ou documentar os comandos do bash), adicione o comando ```set -x``` após ```#!/bin/bash```
 
