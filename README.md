@@ -24,11 +24,6 @@ sudo su -
 git clone https://github.com/wmarinho/pentaho5.git
 cd pentaho5
 ./install
-##Procedimento executado no servidor awslnxbi01 (10.101.0.11)
-sudo su -
-git clone https://github.com/wmarinho/pentaho5.git
-cd pentaho5
-./install
 </pre>
 <pre>
 
