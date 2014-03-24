@@ -38,10 +38,10 @@ Info: JAVA_HOME=/usr/lib/jvm/java
 Digite o nome do usuário pentaho: pentaho
 Tecle ENTER para confirmar ou digite o nome do usuário [pentaho]:
 Tecle ENTER para confirmar ou digite o diretório do usuário pentaho [/opt/pentaho]: /opt/pentaho
-Tecle ENTER para confirmar ou digite o caminho de instalação: [/opt/pentaho]? y
+Tecle ENTER para confirmar ou digite o caminho de instalação: [/opt/pentaho]? 
 Info: Iniciando instalação do biserver-ce
 Info: Baixando aplicação biserver-ce em /root/pentaho5-installer/src
-Diretório /root/pentaho5-installer/src já existente. Tem certeza que deseja continuar? (y/n):
+Diretório /root/pentaho5-installer/src já existente. Tem certeza que deseja continuar? (y/n): y
 ##########################################################
 ##########  CONFIGURAÇÃO PENTAHO BISERVER CE #############
 ##########################################################
