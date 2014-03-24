@@ -80,6 +80,9 @@ pentaho_user= *********
 Aplicar configurações? (y/n): y
 
 
+sudo chkconfig pentaho on
+sudo service pentaho start
+
 </pre>
 Para depurar o código (ou documentar os comandos do bash), adicione o comando ```set -x``` após ```#!/bin/bash```
 
