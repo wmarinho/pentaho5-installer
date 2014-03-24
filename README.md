@@ -78,7 +78,10 @@ Aplicar configurações? (y/n): y
 <pre>
 chkconfig pentaho on
 service pentaho start
-
+</pre>
+Para instalar a versão em desenvolvimento, utilize:
+<pre>
+./install TRUNK-SNAPSHOT-jenkins-BISERVER-CE-608
 </pre>
 Para depurar o código (ou documentar os comandos do bash), adicione o comando ```set -x``` após ```#!/bin/bash```
 
