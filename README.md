@@ -29,7 +29,8 @@ sudo su -
 git clone https://github.com/wmarinho/pentaho5.git
 cd pentaho5
 ./install
-
+</pre>
+<pre>
 
 ##########################################################
 ##########  INSTACAÇÃO PENTAHO BISERVER CE ###############
@@ -78,8 +79,8 @@ hibuser=*********
 jcr_user= *********
 pentaho_user= *********
 Aplicar configurações? (y/n): y
-
-
+</pre>
+<pre>
 sudo chkconfig pentaho on
 sudo service pentaho start
 
