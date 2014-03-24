@@ -42,6 +42,7 @@ Tecle ENTER para confirmar ou digite o caminho de instalação: [/opt/pentaho]?
 Info: Iniciando instalação do biserver-ce
 Info: Baixando aplicação biserver-ce em /root/pentaho5-installer/src
 Diretório /root/pentaho5-installer/src já existente. Tem certeza que deseja continuar? (y/n): y
+******** Omitido saída do unzip ********
 ##########################################################
 ##########  CONFIGURAÇÃO PENTAHO BISERVER CE #############
 ##########################################################
