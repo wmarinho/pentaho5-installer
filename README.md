@@ -220,3 +220,34 @@ cat pentaho.log | less
 ### Configuração Adicionais
 
 * [Pentaho com PostgreSQL](https://github.com/wmarinho/pentaho5/tree/master/config/postgresql)
+
+
+### Erro ao subir o PostgreSQL
+
+Verificando conexão com postgresql. Executando: nc -zv localhost 5432
+nc: connect to localhost port 5432 (tcp) failed: Connection refused
+Erro: Instalação cancelada. Falha na conexão com postgresql localhost:5432 ...
+Favor verificar dados de conexão.
+Para instalação local utilizar: 
+RedHat/Centos: sudo yum install postgresql postgresql-server
+Ubuntu:  sudo apt-get install postgresql postgresql-contrib
+
+Solução:
+
+Quando isso ocorrer é necessário inicializar o PostgreSQL
+
+[root@ip-10-46-213-74 pentaho5-installer]# /etc/init.d/postgresql status
+postmaster is stopped
+[root@ip-10-46-213-74 pentaho5-installer]# /etc/init.d/postgresql start
+
+/var/lib/pgsql9/data is missing. Use "service postgresql initdb" to initialize the cluster first.
+                                                           [FAILED]
+[root@ip-10-46-213-74 pentaho5-installer]# 
+[root@ip-10-46-213-74 pentaho5-installer]# /etc/init.d/postgresql restart
+Stopping postgresql service:                               [  OK  ]
+
+/var/lib/pgsql9/data is missing. Use "service postgresql initdb" to initialize the cluster first.
+                                                           [FAILED]
+[root@ip-10-46-213-74 pentaho5-installer]# service postgresql initdb
+Initializing database:                                     [  OK  ]
+[root@ip-10-46-213-74 pentaho5-installer]# 
