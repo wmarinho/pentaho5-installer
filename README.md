@@ -24,7 +24,7 @@ sudo su -
 yum install git
 mkdir /home/it4biz/git/
 git clone https://github.com/wmarinho/pentaho5-installer.git
-cd pentaho5
+cd pentaho5-installer
 ./install
 </pre>
 <pre>
