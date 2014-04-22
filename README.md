@@ -22,14 +22,15 @@ Linux version 3.4.76-65.111.amzn1.x86_64 (mockbuild@gobi-build-31004) (gcc versi
 <pre>
 sudo su -
 yum install git
+mkdir /home/it4biz/git/
 git clone https://github.com/wmarinho/pentaho5-installer.git
-cd pentaho5
+cd pentaho5-installer
 ./install
 </pre>
 <pre>
 
 ##########################################################
-##########  INSTACAÇÃO PENTAHO BISERVER CE ###############
+##########  INSTALAÇÃO PENTAHO BISERVER CE ###############
 ##########################################################
 5.0.1-stable
 Info: Verificando instalação do java
