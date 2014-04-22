@@ -236,6 +236,7 @@ Solução:
 
 Quando isso ocorrer é necessário inicializar o PostgreSQL
 
+<pre>
 [root@ip-10-46-213-74 pentaho5-installer]# /etc/init.d/postgresql status
 postmaster is stopped
 [root@ip-10-46-213-74 pentaho5-installer]# /etc/init.d/postgresql start
@@ -251,3 +252,5 @@ Stopping postgresql service:                               [  OK  ]
 [root@ip-10-46-213-74 pentaho5-installer]# service postgresql initdb
 Initializing database:                                     [  OK  ]
 [root@ip-10-46-213-74 pentaho5-installer]# 
+
+</pre>
