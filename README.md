@@ -224,6 +224,7 @@ cat pentaho.log | less
 
 ### Erro ao subir o PostgreSQL
 
+<pre>
 Verificando conexão com postgresql. Executando: nc -zv localhost 5432
 nc: connect to localhost port 5432 (tcp) failed: Connection refused
 Erro: Instalação cancelada. Falha na conexão com postgresql localhost:5432 ...
@@ -231,6 +232,7 @@ Favor verificar dados de conexão.
 Para instalação local utilizar: 
 RedHat/Centos: sudo yum install postgresql postgresql-server
 Ubuntu:  sudo apt-get install postgresql postgresql-contrib
+</pre>
 
 Solução:
 
