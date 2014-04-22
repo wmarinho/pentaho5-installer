@@ -21,6 +21,7 @@ Linux version 3.4.76-65.111.amzn1.x86_64 (mockbuild@gobi-build-31004) (gcc versi
 ###Instalar a partir do repositório Git
 <pre>
 sudo su -
+yum install git
 git clone https://github.com/wmarinho/pentaho5.git
 cd pentaho5
 ./install
