@@ -1,0 +1,10 @@
+Oracle Linux 
+
+Cria a base de dados
+service postgresql initdb 
+
+Start PostgreSQL
+/etc/init.d/postgresql start
+
+su postgres
+
