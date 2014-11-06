@@ -17,8 +17,10 @@ database="postgresql"
 #chmod +x $PWD/scripts/*.sh
 
 
+# http://sourceforge.net/projects/pentaho/files/Business%20Intelligence%20Server/5.2/biserver-ce-5.2.0.0-209.zip/download
+#biserver_tag="5.0.1-stable"
 
-biserver_tag="5.0.1-stable"
+biserver_tag="5.2.0.0-209"
 
 if [ "$1" ]; then
         biserver_tag="$1"
