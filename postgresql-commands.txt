@@ -8,3 +8,15 @@ Start PostgreSQL
 
 su postgres
 
+PostgreSQL
+
+Antes de executar o script de instalação é preciso criar um usuário com super poderes no PostgreSQL
+
+CREATE ROLE bi_user LOGIN ENCRYPTED PASSWORD 'md59d4d573fbe93e4cc23d9d56de27b1c67'
+SUPERUSER CREATEDB CREATEROLE REPLICATION
+VALID UNTIL 'infinity';
+
+localhost:
+port: 5432
+usuario: bi_user
+senha: aquela
