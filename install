@@ -3,5 +3,5 @@ pwd=`pwd`
 if [ "$(id -u)" == "0" ]; then
 	$pwd/scripts/install.sh $1
 else
-	echo "Necessário executar como root. Utilize: sudo ./install"
+	echo "You need to execute as root. Use: sudo ./install (Necessário executar como root. Utilize: sudo ./install)"
 fi

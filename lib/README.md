@@ -1,4 +1,6 @@
 # Drivers JDBC
+Q: Where is the folder to put the JDBC .jars in Pentaho BA Server CE 5.2?<BR>
+A:  biserver-ce/tomcat/lib<BR>
 
 <div class="body refbody">
  
@@ -10,11 +12,11 @@
 						<thead align="left" class="thead">
 							<tr class="row">
 								<th class="entry" colspan="1" id="d36e40" rowspan="1" valign="top" width="33.33333333333333%">
-									<strong class="ph b">Banco de Dados</strong>
+									<strong class="ph b">Databases / Banco de Dados</strong>
 								</th>
 
 								<th class="entry" colspan="1" id="d36e46" rowspan="1" valign="top" width="33.33333333333333%">
-									<strong class="ph b">Fornecedor</strong>
+									<strong class="ph b">Vendors / Fornecedor</strong>
 								</th>
 
 								<th class="entry" colspan="1" id="d36e52" rowspan="1" valign="top" width="33.33333333333333%">

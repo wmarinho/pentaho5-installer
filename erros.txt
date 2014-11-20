@@ -1,0 +1,18 @@
+Tecle ENTER para confirmar ou selecione o banco desejado [postgresql]:  
+Iniciando configuração do postgresql
+Informe Hostname ou IP do servidor postgresql [localhost]: 
+Informe a porta do servidor postgresql [5432]: 
+Verificando conexão com postgresql. Executando: nc -zv localhost 5432
+Connection to localhost 5432 port [tcp/postgres] succeeded!
+Informe nome usuário com permissão (DROP, CREATE, GRANT) no banco postgresql [postgres]: bi_consulta
+Informe a senha do usuário bi_consulta : 
+Gerando senhas para usuários no postgresql ...
+hibuser=sle4aQKpaaaaaa
+jcr_user=JJO2z5xoaaaaaaaaaaaaa
+pentaho_user=F18ddz9saaaaaaaaaaasssss
+Aplicar configurações? (y/n): y
+/home/pentaho/biserver-ce/tomcat/conf/Catalina
+psql: FATAL:  nenhuma entrada no pg_hba.conf para máquina "::1", usuário "bi_consulta", banco de dados "postgres", SSL desabilitado
+psql: FATAL:  nenhuma entrada no pg_hba.conf para máquina "::1", usuário "bi_consulta", banco de dados "postgres", SSL desabilitado
+psql: FATAL:  nenhuma entrada no pg_hba.conf para máquina "::1", usuário "bi_consulta", banco de dados "postgres", SSL desabilitado
+[root@vbpent01 pentaho5-installer]# 

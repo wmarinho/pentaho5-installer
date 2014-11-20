@@ -20,14 +20,15 @@ database="postgresql"
 # http://sourceforge.net/projects/pentaho/files/Business%20Intelligence%20Server/5.2/biserver-ce-5.2.0.0-209.zip/download
 #biserver_tag="5.0.1-stable"
 
-biserver_tag="5.2.0.0-209"
+biserver_tag_path="5.2"
+biserver_tag_file="5.2.0.0-209"
 
 if [ "$1" ]; then
         biserver_tag="$1"
 fi
 echo $biserver_tag
 
-biserver_install_url="http://ufpr.dl.sourceforge.net/project/pentaho/Business%20Intelligence%20Server/$biserver_tag/biserver-ce-$biserver_tag.zip"
+biserver_install_url="http://ufpr.dl.sourceforge.net/project/pentaho/Business%20Intelligence%20Server/$biserver_tag_path/biserver-ce-$biserver_tag_file.zip"
 
 trunk=`echo $biserver_tag | grep TRUNK | wc -l`
 echo $trunk
